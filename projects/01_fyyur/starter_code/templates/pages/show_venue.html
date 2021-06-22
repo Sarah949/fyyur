@@ -3,6 +3,8 @@
 {% block content %}
 <div class="row">
 	<div class="col-sm-6">
+		<div id="error" class="hidden">
+
 		<h1 class="monospace">
 			{{ venue.name }}
 		</h1>
@@ -76,6 +78,23 @@
 </section>
 
 <a href="/venues/{{ venue.id }}/edit"><button class="btn btn-primary btn-lg">Edit</button></a>
-
+<button class="btn btn-primary btn-lg" data-id="{{venue.id}}" id="delete_venue_btn">Delete</button>
+<script>
+      document.getElementById("delete_venue_btn").onclick = function(e){
+		 	const venueId = e.target.dataset.id;
+			fetch('/venues/'+ venueId,{
+			method: 'DELETE'
+		}).then(function() {
+			const item = e.target.parentElement;
+		item.remove();
+			document.getElementById("error").className = "hidden";
+			window.location.reload(true);
+		})
+		.catch(function(e) {
+			console.error(e);
+			document.getElementById("error").className = "";
+		});
+	};
+</script>
 {% endblock %}
 
